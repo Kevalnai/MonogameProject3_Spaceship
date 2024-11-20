@@ -12,7 +12,7 @@ namespace MonogameProject3_Spaceship
 {
     internal class Controller
     {
-        private TimeSpan elapsedTime; 
+        private TimeSpan elapsedTime;
         private int secondsElapsed;
 
         public Controller()
@@ -35,20 +35,28 @@ namespace MonogameProject3_Spaceship
             return secondsElapsed; // Return the current seconds count
         }
 
-        public bool didCollisionHappen(Ship player, Asteroid ast) {
+        public bool didCollisionHappen(Ship player, Asteroid ast)
+        {
             int playerRadius = player.getRadius();
             int astRadius = Asteroid.radius;
             int distance = playerRadius + astRadius;
-            if (Vector2.Distance(player.position, ast.position) < distance) {
+            if (Vector2.Distance(player.position, ast.position) < distance)
+            {
                 return true;
             }
             return false;
         }
 
-        
-        public virtual String gameEndScript() { 
-            String gameEndMessage = "Collision!! Game Over!";
+
+        public  String gameEndScript()
+        {
+            String gameEndMessage = "Congratulation You Fhinished Game!";
             return gameEndMessage;
         }
-}
+        public String gameEnd()
+        {
+            String gameEnd = "Spaceship hit by asteroid, " + Game1.surpassed + "Surpassed";
+            return gameEnd;
+        }
+    }
 }

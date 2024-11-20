@@ -20,8 +20,11 @@ namespace MonogameProject3_Spaceship
         List<Asteroid> asteroids = new List<Asteroid>();
         Random random = new Random();
         int score =0;
+        static public int surpassed = 0;
         bool gameWon = false;
         bool gameOver = false;
+        bool timeOver = false;
+        bool ShipCrashed = false;
         
 
         // timer Vareables
@@ -90,6 +93,7 @@ namespace MonogameProject3_Spaceship
             if (secondsElapsed >= maxTime)
             {
                 gameWon = true;
+                timeOver = true;
                 inGame = false;
 
             }
@@ -110,6 +114,7 @@ namespace MonogameProject3_Spaceship
                 if (asteroids[i].position.X < player.position.X - shipSprite.Width / 2)
                 {
                     score++;
+                    surpassed++;
                     asteroids.RemoveAt(i);
 
                 }
@@ -120,6 +125,7 @@ namespace MonogameProject3_Spaceship
                         asteroids.RemoveAt(i);
                         if (score < 0)
                         {
+                            ShipCrashed = true;
                             inGame = false; // this will end the game if the score reachs zero or negative
                         }
 
@@ -127,58 +133,7 @@ namespace MonogameProject3_Spaceship
                 }
             }
 
-            //if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Enter))
-            //{
-            //    newSpeed = true;
-
-            //    player.speed = 3;
-
-            //}
-            //else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            //{
-            //    newSpeed = false;
-            //    player.speed = player.speed;
-            //}
-            //else
-            //{
-            //    player.speed = player.speed;
-            //}
-            //if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Enter))
-            //{
-            //    newSpeed = true;
-
-            //    player.speed = 3;
-
-            //}
-            //else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            //{
-            //    newSpeed = false;
-            //    player.speed = player.speed;
-            //}
-            //if (Keyboard.GetState().IsKeyDown(Keys.Up) && Keyboard.GetState().IsKeyDown(Keys.Enter))
-            //{
-            //    newSpeed = true;
-
-            //    player.speed = 3;
-
-            //}
-            //else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            //{
-            //    newSpeed = false;
-            //    player.speed = player.speed;
-            //}
-            //if (Keyboard.GetState().IsKeyDown(Keys.Down) && Keyboard.GetState().IsKeyDown(Keys.Enter))
-            //{
-            //    newSpeed = true;
-
-            //    player.speed = 3; 
-
-            //}
-            //else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            //{
-            //    newSpeed = false;
-            //    player.speed = player.speed;
-            //}
+           
 
         
 
@@ -189,18 +144,8 @@ namespace MonogameProject3_Spaceship
 
                 // Get updated seconds count from Controller
                 secondsElapsed = controller.updateTime(gameTime);
-
-                // Check for collision
-                if (!inGame)
-                {
-                    
-                }
-
-
                 base.Update(gameTime);
-
-
-            
+          
         }
 
         protected override void Draw(GameTime gameTime)
@@ -228,9 +173,17 @@ namespace MonogameProject3_Spaceship
             // Displaying Game Over Message
             if (!inGame)
             {
-                _spriteBatch.DrawString(gameFont, controller.gameEndScript(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
+                if (timeOver)
+                {
+                    _spriteBatch.DrawString(gameFont, controller.gameEndScript(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
+                }
+                else
+                {
+                    _spriteBatch.DrawString(gameFont, controller.gameEnd(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
 
-            
+                }
+
+
             }
 
             _spriteBatch.End();
