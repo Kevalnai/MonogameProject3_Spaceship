@@ -17,10 +17,13 @@ namespace MonogameProject3_Spaceship
         public int speed;
         static public int radius = 60;
 
-        public Asteroid(int speed)
+        public Asteroid(int speed, Vector2 position)
         {
             this.speed = speed;
+            this.position = position;
         }
+
+        
 
         public void updateAsteroid()
         {

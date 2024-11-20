@@ -28,7 +28,7 @@ namespace MonogameProject3_Spaceship
         TimeSpan asteroidSpawnTime = TimeSpan.Zero;
 
         Ship player = new Ship();
-        Asteroid ast1 = new Asteroid(4);
+        //Asteroid ast1 = new Asteroid(4);
 
         // Timer variables
         private TimeSpan elapsedTime;
@@ -77,34 +77,77 @@ namespace MonogameProject3_Spaceship
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+
                 Exit();
 
             // TODO: Add your update logic here
+            // Updating the timer
+            elapsedTime += gameTime.ElapsedGameTime;
+            secondsElapsed = Math.Min(controller.updateTime(gameTime), maxTime);
 
-            //1// Auto Move the player along X-axis
-            //player.position.X++;
-
-            //2// Auto Move the player along Y-axis
-            //player.position.Y++;
-
-            //3// Move the player along X-axis and Y-axis using Keyboard   
-            player.setRadius(shipSprite.Width);
-            player.updateShip();
-            ast1.updateAsteroid();
-
-            // Get updated seconds count from Controller
-            secondsElapsed = controller.updateTime(gameTime);
-
-            // Check for collision
-            if (controller.didCollisionHappen(player, ast1))
+            if (secondsElapsed >= maxTime)
             {
+                gameWon = true;
                 inGame = false;
+
             }
 
-            
-            base.Update(gameTime);
+            if (elapsedTime > asteroidSpawnTime + TimeSpan.FromSeconds(spawnInterval))
+            {
+                int speed = random.Next(1, 4);
+                Vector2 position = new Vector2(_graphics.PreferredBackBufferWidth, random.Next(0, _graphics.PreferredBackBufferHeight));
+                asteroids.Add(new Asteroid(speed, position));
+                asteroidSpawnTime = elapsedTime;
+            }
 
-           
+            // update each asteroid
+
+            for (int i = asteroids.Count - 1; i >= 0; i--)
+            {
+                asteroids[i].updateAsteroid();
+                if (asteroids[i].position.X < 0)
+                {
+                    score++;
+                    asteroids.RemoveAt(i);
+
+                }
+                else if (controller.didCollisionHappen(player, asteroids[i]))
+                {
+                    {
+                        score -= 3;
+                        asteroids.RemoveAt(i);
+                        if (score <= 0)
+                        {
+                            inGame = false; // this will end the game if the score reachs zero or negative
+                        }
+
+                    }
+                }
+                //1// Auto Move the player along X-axis
+                //player.position.X++;
+
+                //2// Auto Move the player along Y-axis
+                //player.position.Y++;
+
+                //3// Move the player along X-axis and Y-axis using Keyboard   
+                player.setRadius(shipSprite.Width);
+                player.updateShip();
+                //ast1.updateAsteroid();
+
+                // Get updated seconds count from Controller
+                secondsElapsed = controller.updateTime(gameTime);
+
+                // Check for collision
+                //if (controller.didCollisionHappen(player, ast1))
+                {
+                    inGame = false;
+                }
+
+
+                base.Update(gameTime);
+
+
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -117,7 +160,7 @@ namespace MonogameProject3_Spaceship
             _spriteBatch.Draw(spaceSprite, new Vector2(0, 0), Color.White);
             //_spriteBatch.Draw(shipSprite, player.position, Color.White);//without centering the sprite
             _spriteBatch.Draw(shipSprite, new Vector2(player.position.X-shipSprite.Width/2, player.position.Y-shipSprite.Height/2), Color.White);//Using Offset and With Centering the sprite
-            _spriteBatch.Draw(asteroidSprite, new Vector2(ast1.position.X-Asteroid.radius , ast1.position.Y-Asteroid.radius), Color.White);
+            //_spriteBatch.Draw(asteroidSprite, new Vector2(ast1.position.X-Asteroid.radius , ast1.position.Y-Asteroid.radius), Color.White);
 
             // Displaying Timer
             _spriteBatch.DrawString(timerFont, "Time: " + secondsElapsed, new Vector2(_graphics.PreferredBackBufferWidth / 2, 30), Color.White);
