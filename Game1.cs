@@ -20,10 +20,13 @@ namespace MonogameProject3_Spaceship
         List<Asteroid> asteroids = new List<Asteroid>();
         Random random = new Random();
         int score =0;
-        bool gameWon = false;   
+        bool gameWon = false;
 
-       
-        
+        // timer Vareables
+        const int maxTime = 15;
+        const int spawnInterval = 2;
+        TimeSpan asteroidSpawnTime = TimeSpan.Zero;
+
         Ship player = new Ship();
         Asteroid ast1 = new Asteroid(4);
 
