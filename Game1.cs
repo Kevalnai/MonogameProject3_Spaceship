@@ -26,7 +26,7 @@ namespace MonogameProject3_Spaceship
         bool gameOver = false;
         bool timeOver = false;
         bool ShipCrashed = false;
-        SoundEffect Start;
+        SoundEffect Start, end;
 
         // timer Vareables
         const int maxTime = 15;
@@ -71,6 +71,7 @@ namespace MonogameProject3_Spaceship
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Start = Content.Load<SoundEffect>("start");
+            end = Content.Load<SoundEffect>("end");
             // TODO: use this.Content to load your game content here
             shipSprite = Content.Load<Texture2D>("ship");
             asteroidSprite = Content.Load<Texture2D>("asteroid");
@@ -97,6 +98,7 @@ namespace MonogameProject3_Spaceship
 
             if (secondsElapsed >= maxTime)
             {
+                
                 gameWon = true;
                 timeOver = true;
                 inGame = false;
@@ -130,6 +132,7 @@ namespace MonogameProject3_Spaceship
                         asteroids.RemoveAt(i);
                         if (score < 0)
                         {
+                            end.Play();
                             ShipCrashed = true;
                             inGame = false; // this will end the game if the score reachs zero or negative
                         }
@@ -180,10 +183,12 @@ namespace MonogameProject3_Spaceship
             {
                 if (timeOver)
                 {
+                    
                     _spriteBatch.DrawString(gameFont, controller.gameEndScript(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
                 }
                 else
                 {
+                    
                     _spriteBatch.DrawString(gameFont, controller.gameEnd(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
 
                 }
