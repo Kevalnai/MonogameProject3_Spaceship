@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace MonogameProject3_Spaceship
 {
@@ -48,7 +41,7 @@ namespace MonogameProject3_Spaceship
         }
 
 
-        public  String gameEndScript()
+        public String gameEndScript()
         {
             String gameEndMessage = "Congratulation You Fhinished Game!";
             return gameEndMessage;

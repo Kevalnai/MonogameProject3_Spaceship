@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -19,13 +20,13 @@ namespace MonogameProject3_Spaceship
 
         List<Asteroid> asteroids = new List<Asteroid>();
         Random random = new Random();
-        int score =0;
+        int score = 0;
         static public int surpassed = 0;
         bool gameWon = false;
         bool gameOver = false;
         bool timeOver = false;
         bool ShipCrashed = false;
-        
+        SoundEffect Start;
 
         // timer Vareables
         const int maxTime = 15;
@@ -44,7 +45,7 @@ namespace MonogameProject3_Spaceship
 
         //Game State
         bool inGame = true;
-          
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,20 +63,21 @@ namespace MonogameProject3_Spaceship
             //timer related
             elapsedTime = TimeSpan.Zero;
             secondsElapsed = 0;
-            
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Start = Content.Load<SoundEffect>("start");
             // TODO: use this.Content to load your game content here
             shipSprite = Content.Load<Texture2D>("ship");
             asteroidSprite = Content.Load<Texture2D>("asteroid");
             spaceSprite = Content.Load<Texture2D>("space");
             gameFont = Content.Load<SpriteFont>("spaceFont");
             timerFont = Content.Load<SpriteFont>("timerFont");
+            Start.Play();
 
         }
 
@@ -86,6 +88,9 @@ namespace MonogameProject3_Spaceship
                 Exit();
 
             // TODO: Add your update logic here
+
+            // Start sound
+            
             // Updating the timer
             elapsedTime += gameTime.ElapsedGameTime;
             secondsElapsed = Math.Min(controller.updateTime(gameTime), maxTime);
@@ -133,19 +138,19 @@ namespace MonogameProject3_Spaceship
                 }
             }
 
-           
 
-        
+
+
 
             //3// Move the player along X-axis and Y-axis using Keyboard   
             player.setRadius(shipSprite.Width);
             player.updateShip();
-                
 
-                // Get updated seconds count from Controller
-                secondsElapsed = controller.updateTime(gameTime);
-                base.Update(gameTime);
-          
+
+            // Get updated seconds count from Controller
+            secondsElapsed = controller.updateTime(gameTime);
+            base.Update(gameTime);
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -157,7 +162,7 @@ namespace MonogameProject3_Spaceship
             _spriteBatch.Begin();
             _spriteBatch.Draw(spaceSprite, new Vector2(0, 0), Color.White);
             //_spriteBatch.Draw(shipSprite, player.position, Color.White);//without centering the sprite
-            _spriteBatch.Draw(shipSprite, new Vector2(player.position.X-shipSprite.Width/2, player.position.Y-shipSprite.Height/2), Color.White);//Using Offset and With Centering the sprite
+            _spriteBatch.Draw(shipSprite, new Vector2(player.position.X - shipSprite.Width / 2, player.position.Y - shipSprite.Height / 2), Color.White);//Using Offset and With Centering the sprite
             //_spriteBatch.Draw(asteroidSprite, new Vector2(ast1.position.X-Asteroid.radius , ast1.position.Y-Asteroid.radius), Color.White);
 
             foreach (var asteroid in asteroids)

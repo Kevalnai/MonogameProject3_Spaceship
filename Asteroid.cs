@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 
 
 namespace MonogameProject3_Spaceship
@@ -23,11 +15,11 @@ namespace MonogameProject3_Spaceship
             this.position = position;
         }
 
-        
+
 
         public void updateAsteroid()
         {
-           this.position.X -= this.speed;
+            this.position.X -= this.speed;
         }
     }
 }
