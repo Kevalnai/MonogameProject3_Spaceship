@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -46,7 +45,8 @@ namespace MonogameProject3_Spaceship
             return false;
         }
 
-        public String gameEndScript() { 
+        
+        public virtual String gameEndScript() { 
             String gameEndMessage = "Collision!! Game Over!";
             return gameEndMessage;
         }

@@ -13,8 +13,9 @@ namespace MonogameProject3_Spaceship
     internal class Ship
     {
         public Vector2 position = new Vector2(100, 100);
-        int speed = 2;
-        int radius = 0;
+        public int speed = 10;
+        int radius = 25;
+        bool newSpeed = false;
 
         public void setRadius(int radius)
         {
@@ -26,18 +27,58 @@ namespace MonogameProject3_Spaceship
         public void updateShip() {
             //3// Move the player along X-axis using Keyboard   
             KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Enter))
+            {
+                newSpeed = true;
+                speed = 15;
+            }
+            else if (state.IsKeyUp(Keys.Enter))
+            {
+                newSpeed = false;
+                speed = 10;
+            }
             if (state.IsKeyDown(Keys.Left))
             {
                 this.position.X -= speed;
+            }
+            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Enter))
+            {
+                newSpeed = true;
+                speed = 15;
+            }
+            else if (state.IsKeyUp(Keys.Enter))
+            {
+                newSpeed = false;
+                speed = 10;
             }
             if (state.IsKeyDown(Keys.Right))
             {
                 this.position.X += speed;
             }
             //4// Move the player along X-axis using Keyboard  
+            if (state.IsKeyDown(Keys.Up) && state.IsKeyDown(Keys.Enter))
+            {
+                newSpeed = true;
+                speed =15;
+            }
+            else if (state.IsKeyUp(Keys.Enter))
+            {
+                newSpeed = false;
+                speed = 10;
+            }
             if (state.IsKeyDown(Keys.Up))
             {
                 this.position.Y -=speed ;
+            }
+            if (state.IsKeyDown(Keys.Down) && state.IsKeyDown(Keys.Enter))
+            {
+                newSpeed = true;
+                speed = 15;
+            }
+            else if (state.IsKeyUp(Keys.Enter))
+            {
+                newSpeed = false;
+                speed = 10;
             }
             if (state.IsKeyDown(Keys.Down))
             {

@@ -21,6 +21,8 @@ namespace MonogameProject3_Spaceship
         Random random = new Random();
         int score =0;
         bool gameWon = false;
+        bool gameOver = false;
+        
 
         // timer Vareables
         const int maxTime = 15;
@@ -57,7 +59,7 @@ namespace MonogameProject3_Spaceship
             //timer related
             elapsedTime = TimeSpan.Zero;
             secondsElapsed = 0;
-
+            
             base.Initialize();
         }
 
@@ -94,7 +96,7 @@ namespace MonogameProject3_Spaceship
 
             if (elapsedTime > asteroidSpawnTime + TimeSpan.FromSeconds(spawnInterval))
             {
-                int speed = random.Next(1, 4);
+                int speed = random.Next(1, 10);
                 Vector2 position = new Vector2(_graphics.PreferredBackBufferWidth, random.Next(0, _graphics.PreferredBackBufferHeight));
                 asteroids.Add(new Asteroid(speed, position));
                 asteroidSpawnTime = elapsedTime;
@@ -105,7 +107,7 @@ namespace MonogameProject3_Spaceship
             for (int i = asteroids.Count - 1; i >= 0; i--)
             {
                 asteroids[i].updateAsteroid();
-                if (asteroids[i].position.X < 0)
+                if (asteroids[i].position.X < player.position.X - shipSprite.Width / 2)
                 {
                     score++;
                     asteroids.RemoveAt(i);
@@ -116,38 +118,89 @@ namespace MonogameProject3_Spaceship
                     {
                         score -= 3;
                         asteroids.RemoveAt(i);
-                        if (score <= 0)
+                        if (score < 0)
                         {
                             inGame = false; // this will end the game if the score reachs zero or negative
                         }
 
                     }
                 }
-                //1// Auto Move the player along X-axis
-                //player.position.X++;
+            }
 
-                //2// Auto Move the player along Y-axis
-                //player.position.Y++;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            //{
+            //    newSpeed = true;
 
-                //3// Move the player along X-axis and Y-axis using Keyboard   
-                player.setRadius(shipSprite.Width);
-                player.updateShip();
-                //ast1.updateAsteroid();
+            //    player.speed = 3;
+
+            //}
+            //else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            //{
+            //    newSpeed = false;
+            //    player.speed = player.speed;
+            //}
+            //else
+            //{
+            //    player.speed = player.speed;
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            //{
+            //    newSpeed = true;
+
+            //    player.speed = 3;
+
+            //}
+            //else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            //{
+            //    newSpeed = false;
+            //    player.speed = player.speed;
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.Up) && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            //{
+            //    newSpeed = true;
+
+            //    player.speed = 3;
+
+            //}
+            //else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            //{
+            //    newSpeed = false;
+            //    player.speed = player.speed;
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.Down) && Keyboard.GetState().IsKeyDown(Keys.Enter))
+            //{
+            //    newSpeed = true;
+
+            //    player.speed = 3; 
+
+            //}
+            //else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            //{
+            //    newSpeed = false;
+            //    player.speed = player.speed;
+            //}
+
+        
+
+            //3// Move the player along X-axis and Y-axis using Keyboard   
+            player.setRadius(shipSprite.Width);
+            player.updateShip();
+                
 
                 // Get updated seconds count from Controller
                 secondsElapsed = controller.updateTime(gameTime);
 
                 // Check for collision
-                //if (controller.didCollisionHappen(player, ast1))
+                if (!inGame)
                 {
-                    inGame = false;
+                    
                 }
 
 
                 base.Update(gameTime);
 
 
-            }
+            
         }
 
         protected override void Draw(GameTime gameTime)
@@ -162,13 +215,22 @@ namespace MonogameProject3_Spaceship
             _spriteBatch.Draw(shipSprite, new Vector2(player.position.X-shipSprite.Width/2, player.position.Y-shipSprite.Height/2), Color.White);//Using Offset and With Centering the sprite
             //_spriteBatch.Draw(asteroidSprite, new Vector2(ast1.position.X-Asteroid.radius , ast1.position.Y-Asteroid.radius), Color.White);
 
+            foreach (var asteroid in asteroids)
+            {
+                _spriteBatch.Draw(asteroidSprite, asteroid.position, Color.White);
+            }
+
             // Displaying Timer
             _spriteBatch.DrawString(timerFont, "Time: " + secondsElapsed, new Vector2(_graphics.PreferredBackBufferWidth / 2, 30), Color.White);
+            _spriteBatch.DrawString(gameFont, $"Score: {score}", new Vector2(10, 10), Color.White);
+            _spriteBatch.DrawString(timerFont, $"Time: {secondsElapsed}", new Vector2(10, 50), Color.White);
 
             // Displaying Game Over Message
             if (!inGame)
             {
                 _spriteBatch.DrawString(gameFont, controller.gameEndScript(), new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, _graphics.PreferredBackBufferHeight / 2), Color.White);
+
+            
             }
 
             _spriteBatch.End();

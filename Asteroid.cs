@@ -15,7 +15,7 @@ namespace MonogameProject3_Spaceship
     {
         public Vector2 position = new Vector2(1300, 300);
         public int speed;
-        static public int radius = 60;
+        static public int radius = 30;
 
         public Asteroid(int speed, Vector2 position)
         {
